@@ -1,0 +1,37 @@
+[
+    {
+        "id"           : 1,
+        "name"         : "Fun task",
+        "duration"     : 4,
+        "durationUnit" : "h",
+        "iconCls"      : "fa fa-beer"
+    },
+    {
+        "id"           : 2,
+        "name"         : "Medium fun task",
+        "duration"     : 8,
+        "durationUnit" : "h",
+        "iconCls"      : "fa fa-cog"
+    },
+    {
+        "id"           : 3,
+        "name"         : "Outright boring task",
+        "duration"     : 2,
+        "durationUnit" : "h",
+        "iconCls"      : "fa fa-book"
+    },
+    {
+        "id"           : 4,
+        "name"         : "Inspiring task",
+        "duration"     : 2,
+        "durationUnit" : "h",
+        "iconCls"      : "fa fa-book"
+    },
+    {
+        "id"           : 5,
+        "name"         : "Mysterious task",
+        "duration"     : 2,
+        "durationUnit" : "h",
+        "iconCls"      : "fa fa-question"
+    }
+]
