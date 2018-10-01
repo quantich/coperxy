@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import moment from 'moment';
 import { Timeline, DataSet } from 'vis';
 import '../../../node_modules/vis/dist/vis.css';
-import { Table } from 'antd';
 import familias from '../fixtures/familias';
 import familiasInfo from '../fixtures/informacoes';
 import finalDates from '../fixtures/datasFinais';
