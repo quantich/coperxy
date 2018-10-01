@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Timeline, DataSet } from 'vis';
 import '../../../node_modules/vis/dist/vis.css';
-import familias from '../fixtures/familias';
 
 const options = {
   orientation: 'top',
@@ -24,21 +23,13 @@ const options = {
 
 const numberOfGroups = 25;
 const groups = new DataSet();
-// for (let i = 0; i < numberOfGroups; i += 1) {
-//   groups.add({
-//     id: i,
-//     content: i,
-//     subgroupStack: false
-//   });
-// }
-
-familias.forEach((f) => {
+for (let i = 0; i < numberOfGroups; i += 1) {
   groups.add({
-    id: Number(f.id),
-    content: f.name,
+    id: i,
+    content: i,
     subgroupStack: false
   });
-});
+}
 
 const numberOfItems = 300;
 const items = new DataSet();
