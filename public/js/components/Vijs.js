@@ -5,7 +5,7 @@ import '../../../node_modules/vis/dist/vis.css';
 import familias from '../fixtures/familias';
 import ops from '../fixtures/ops';
 
-const timelineHeight = Math.round(window.innerHeight * 0.9) + 'px';
+const timelineHeight = Math.round(window.innerHeight * 0.95) + 'px';
 const options = {
   orientation: 'top',
   maxHeight: timelineHeight,
@@ -147,13 +147,17 @@ class VisTimeline extends React.Component {
   render() {
     return (
       <div >        
-        <div className="timeline">  
-        <div className="head1">Sequenciamento de costura</div>
-        <div className="head2">O.P.</div>
+        <div className="timeline">
           <div id="mytimeline" />          
           <div className="items-panel">            
-            <div className="items">
-              {this.renderOpList()}
+            <table className="items">
+              <thead>
+                <th>O.P.</th>
+                <th>Duração</th>
+              </thead>
+              <tbody>
+                {this.renderOpList()}
+              </tbody>
             </div>
           </div>
         </div>
