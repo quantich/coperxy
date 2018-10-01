@@ -139,6 +139,7 @@ class VisTimeline extends React.Component {
           }).map((x) => {
             if (x.overType !== 'op') return x;
             if (x.id === t.id) return x;
+            if (x.group !== t.group) return x;
             if (!computeEngine.shouldPushEvent(
               startPoint, lastEndDate,
               moment(x.start), moment(x.end)
