@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import moment from 'moment';
 import { Timeline, DataSet } from 'vis';
 import '../../../node_modules/vis/dist/vis.css';
+import { Table } from 'antd';
 import familias from '../fixtures/familias';
 import familiasInfo from '../fixtures/informacoes';
 import finalDates from '../fixtures/datasFinais';
@@ -98,10 +99,11 @@ class VisTimeline extends React.Component {
   }
 
   initTimeline = () => {
-    const timelineHeight = `${Math.round(window.innerHeight * 0.9)  }px`;
+    const timelineHeight = `${Math.round(window.innerHeight * 0.9) }px`;
     const options = {
       orientation: 'top',
       maxHeight: timelineHeight,
+      verticalScroll: true,
       start: new Date(),
       end: new Date(1000 * 60 * 60 * 24 + (new Date()).valueOf()),
       editable: true,
@@ -182,10 +184,19 @@ class VisTimeline extends React.Component {
 
   renderOpList = () => {
     return ops.map((op) => {
+      // precisamos colocar a referência
       return (
-        <div draggable="true" className="item" onDragStart={e => this.onDragStart(e, op)}>
-          {op.name}
-        </div>
+        <tr draggable="true" className="item" onDragStart={e => this.onDragStart(e, op)}>
+          <td>
+            {op.name}
+          </td>
+          <td>
+            {op.id}
+          </td>
+          <td className="duration">
+            {op.duration}
+          </td>
+        </tr>
       );
     });
   }
@@ -195,7 +206,7 @@ class VisTimeline extends React.Component {
     const item = {
       id: Number(op.id),
       type: 'range',
-      content: event.target.innerHTML.split('-')[0].trim(),
+      content: op.name,
       overType: 'op',
       duration: op.duration
     };
@@ -206,13 +217,20 @@ class VisTimeline extends React.Component {
     return (
       <div>
         <div className="timeline">
-          <div className="head1">Sequenciamento de costura</div>
-          <div className="head2">O.P.</div>
           <div id="mytimeline" />
           <div className="items-panel">
-            <div className="items">
-              {this.renderOpList()}
-            </div>
+            <table className="items">
+              <thead>
+                <tr>
+                  <th>Ordem</th>
+                  <th>Ref.</th>
+                  <th>Duração</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.renderOpList()}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
