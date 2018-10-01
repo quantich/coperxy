@@ -10,7 +10,70 @@ export default class ComputeEventDates {
     this.finalDate = finalDates[resourceId];
   }
 
-  computeEventDates = (eventRecord, momentStartDate) => {
+  computeEventDates = (durationParam, momentStartDate) => {
+    const { info, finalDate } = this;
+    const quantidadeRecursos = info.qtde_recursos;
+    const duration = durationParam / quantidadeRecursos;
+    let timeLine = [];
+    /* verifica proximo dia disponivel no cadastro do systextil */
+    const availability = this.nextAvailability(momentStartDate, finalDate);
+    /* Busca periodos cadastrados no calendario de disponibilidade */
+    const avaliableTime = this.getAvaliableTime(availability);
+    /* Verifica se a data inicial esta dentro de um periodo disponivel, se não estiver busca o proximo disponivel */
+    const startDate = this.normalizeStartDate(momentStartDate,
+      avaliableTime.startDate, avaliableTime.endDate);
+    /* Ajusta tempodisponivel usando mesma logica do calculo de cima */
+    const tempoDisponivel = this.normalizeAvaliableTime(
+      startDate, avaliableTime
+    );
+
+    /* calcula a data final */
+    let tempoDisponivelA = tempoDisponivel;
+    if (duration <= tempoDisponivelA) {
+      tempoDisponivelA = duration;
+    }
+    let endDate = moment(startDate).add((tempoDisponivelA), 'minutes');
+    timeLine = [...timeLine, {
+      startDate, endDate
+    }];
+
+    /* Se a duração do evento é menor que o tempo disponivel não precisa mais calcular as datas */
+    if (duration < tempoDisponivel) {
+      return {
+        startDate,
+        endDate,
+        timeLine
+      };
+    }
+    let restDuration = duration - tempoDisponivel;
+    let nextMomentDate = moment(startDate);
+    /* Calcula todas datas disponiveis ate zerar a duração do evento */
+    while (restDuration > 0) {
+      nextMomentDate.add(1, 'days');
+      const nextAvailability = this.nextAvailability(
+        nextMomentDate, finalDate
+      );
+      const nextAvaliableTime = this.getAvaliableTime(nextAvailability);
+      nextMomentDate = nextAvaliableTime.startDate;
+      let nextTempoDisponivel = nextAvaliableTime.availability.tempo_disponivel;
+      if (restDuration < nextTempoDisponivel) {
+        nextTempoDisponivel = restDuration;
+      }
+      const nextEndDate = moment(nextMomentDate).add(nextTempoDisponivel, 'minutes');
+      endDate = nextEndDate;
+      timeLine = [...timeLine, {
+        startDate: nextMomentDate, endDate: nextEndDate
+      }];
+      restDuration -= nextAvaliableTime.availability.tempo_disponivel;
+    }
+    return {
+      startDate,
+      endDate,
+      timeLine
+    };
+  }
+
+  computeEventDatesWithTimeline = (eventRecord, momentStartDate) => {
     const { info, finalDate } = this;
     const quantidadeRecursos = info.qtde_recursos;
     const duration = eventRecord.originalData.duration / quantidadeRecursos;
