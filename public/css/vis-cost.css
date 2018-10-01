@@ -55,10 +55,6 @@
     max-height: 100%;
 }
 
-table.items {
-    color:#bfbfbf;
-}
-
 .item {
     border-bottom: 1px solid #bfbfbf;
     padding: 15px;   
