@@ -5,12 +5,15 @@ import '../../../node_modules/vis/dist/vis.css';
 import familias from '../fixtures/familias';
 import ops from '../fixtures/ops';
 
+const timelineHeight = Math.round(window.innerHeight * 0.9) + 'px';
 const options = {
   orientation: 'top',
-  maxHeight: 400,
+  maxHeight: timelineHeight,
   start: new Date(),
   end: new Date(1000 * 60 * 60 * 24 + (new Date()).valueOf()),
   editable: true,
+  verticalScroll:true,
+  showTooltips:true,
   template(item, element) {
     if (!item) { return; }
     ReactDOM.unmountComponentAtNode(element);
@@ -97,11 +100,10 @@ class VisTimeline extends React.Component {
   renderOpList = () => {
     return ops.map((op) => {
       return (
-        <li draggable="true" className="item" onDragStart={e => this.onDragStart(e, op)}>
+        <div draggable="true" className="item" onDragStart={e => this.onDragStart(e, op)}>
           {op.name}
-          {' '}
-- range
-                </li>
+          {' '} - range
+        </div>
       );
     });
   }
@@ -146,13 +148,13 @@ class VisTimeline extends React.Component {
     return (
       <div >        
         <div className="timeline">  
-        <h4 className="head1">Sequenciamento de costura</h4>
-        <h4 className="head2">O.P.</h4>
+        <div className="head1">Sequenciamento de costura</div>
+        <div className="head2">O.P.</div>
           <div id="mytimeline" />          
           <div className="items-panel">            
-            <ul className="items">
+            <div className="items">
               {this.renderOpList()}
-            </ul>
+            </div>
           </div>
         </div>
       </div>
