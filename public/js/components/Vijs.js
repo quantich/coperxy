@@ -144,40 +144,15 @@ class VisTimeline extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1>Vis timline with React</h1>
-        <h2>Using react components for items and group templates</h2>
-        <div id="mytimeline" />
-        <div className="items-panel">
-          <ul className="items">
-            {this.renderOpList()}
-          </ul>
-        </div>
-
-        <div className="items-panel">
-          <div className="side">
-            <h3>Items:</h3>
+      <div >        
+        <div className="timeline">  
+        <h4 className="head1">Sequenciamento de costura</h4>
+        <h4 className="head2">O.P.</h4>
+          <div id="mytimeline" />          
+          <div className="items-panel">            
             <ul className="items">
-              <li draggable="true" className="item" onDragStart={this.handleDragStart}>
-                item 1 - box
-              </li>
-              <li draggable="true" className="item" onDragStart={this.handleDragStart}>
-                item 2 - point
-              </li>
-              <li draggable="true" className="item" onDragStart={this.handleDragStart}>
-                item 3 - range
-              </li>
-              <li draggable="true" className="item">
-                item 3 - range - fixed times -
-                (start: now, end: now + 10 min)
-              </li>
+              {this.renderOpList()}
             </ul>
-          </div>
-          <div className="side">
-            <h3>Object with :</h3>
-            <li draggable="true" className="object-item">
-              object with target
-            </li>
           </div>
         </div>
       </div>
