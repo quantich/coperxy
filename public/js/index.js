@@ -4,7 +4,7 @@ import { AppContainer } from 'react-hot-loader'; // eslint-disable-line
 import { Provider } from 'react-redux';
 import App from './App';
 import configureStore from './store/configure-store';
-import '../css/scheduler.css';
+import '../css/vis-cost.css';
 
 const store = configureStore();
 

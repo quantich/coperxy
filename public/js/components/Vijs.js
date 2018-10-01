@@ -115,16 +115,17 @@ class VisTimeline extends React.Component {
   }
 
   initTimeline = () => {
+    const timelineHeight = `${Math.round(window.innerHeight * 0.9)  }px`;
     const options = {
       orientation: 'top',
-      maxHeight: 400,
+      maxHeight: timelineHeight,
       start: new Date(),
       end: new Date(1000 * 60 * 60 * 24 + (new Date()).valueOf()),
       editable: true,
       template: (item, element) => {
         if (!item) { return; }
         ReactDOM.unmountComponentAtNode(element);
-        console.log("teste1", element, item);
+        console.log('teste1', element, item);
         ReactDOM.render(<ItemTemplate key={item.id} item={item} />, element);
       },
       groupTemplate: (group, element) => {
@@ -160,9 +161,9 @@ class VisTimeline extends React.Component {
   renderOpList = () => {
     return ops.map((op) => {
       return (
-        <li draggable="true" className="item" onDragStart={e => this.onDragStart(e, op)}>
+        <div draggable="true" className="item" onDragStart={e => this.onDragStart(e, op)}>
           {op.name}
-        </li>
+        </div>
       );
     });
   }
@@ -182,13 +183,15 @@ class VisTimeline extends React.Component {
   render() {
     return (
       <div>
-        <h1>Vis timline with React</h1>
-        <h2>Using react components for items and group templates</h2>
-        <div id="mytimeline" />
-        <div className="items-panel">
-          <ul className="items">
-            {this.renderOpList()}
-          </ul>
+        <div className="timeline">
+          <div className="head1">Sequenciamento de costura</div>
+          <div className="head2">O.P.</div>
+          <div id="mytimeline" />
+          <div className="items-panel">
+            <div className="items">
+              {this.renderOpList()}
+            </div>
+          </div>
         </div>
       </div>
     );
