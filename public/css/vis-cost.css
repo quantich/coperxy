@@ -1,32 +1,44 @@
 .timeline {
-    display: grid;
-    grid-template-columns: auto auto auto;
-    grid-column-gap: 1%;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-column-gap: 1%;
 }
 
 .head1{
-    grid-column-start: 1;
+  grid-column-start: 1;
 }
 
 .head2{
-    grid-column-start: 25;
+  grid-column-start: 25;
 }
 
 #mytimeline {
-    grid-column-start: 1;
-    grid-column-end: 25;
-    grid-row: 2;
+  grid-column-start: 1;
+  grid-column-end: 25;
+  grid-row: 2;
 }
 
 .items-panel {
-    max-height: 100%;
-    overflow: auto;
-    grid-row: 2;
-    grid-column-start: 25;
-    border: 1px solid #bfbfbf;
+  max-height: 100%;
+  overflow: auto;
+  grid-row: 2;
+  grid-column-start: 25;
+  border: 1px solid #bfbfbf;
 }
 
 .item{
-    border-bottom: 1px solid #bfbfbf;
-    padding: 15px;
+  border-bottom: 1px solid #bfbfbf;
+  padding: 15px;
+}
+
+.vis-group {
+  background: repeating-linear-gradient(-55deg, #ddd, #ddd 10px, #eee 5px, #eee 20px);
+}
+
+.vis-item.vis-background {
+  background: repeating-linear-gradient(-55deg, cyan, cyan 10px, #eee 5px, #eee 20px);
+}
+
+.vis-item.vis-range {
+  opacity: 0.7;
 }

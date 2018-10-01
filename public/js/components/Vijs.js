@@ -80,9 +80,8 @@ const GroupTemplate = (props) => {
 
 const ItemTemplate = (props) => {
   const { item } = props;
-  console.log(item);
   return (
-    <div>
+    <div className="item-template">
       <label>{item.content}</label>
     </div>
   );
@@ -90,28 +89,12 @@ const ItemTemplate = (props) => {
 
 class VisTimeline extends React.Component {
   state = {
-    items: [
-      {
-        id: 43432423423,
-        group: 1,
-        start: startx,
-        end: endx,
-        type: 'background',
-        key: 432432423432432423
-      },
-      {
-        id: 43423423677,
-        group: 5,
-        start: startx,
-        end: endx,
-        type: 'background',
-        key: 4324324234324324234343
-      }
-    ]
+    items: []
   }
 
   componentDidMount() {
     this.initTimeline();
+    this.prepareCalendarBk(calendario);
   }
 
   initTimeline = () => {
@@ -125,8 +108,7 @@ class VisTimeline extends React.Component {
       template: (item, element) => {
         if (!item) { return; }
         ReactDOM.unmountComponentAtNode(element);
-        console.log('teste1', element, item);
-        ReactDOM.render(<ItemTemplate key={item.id} item={item} />, element);
+        ReactDOM.render(<ItemTemplate key={`item-${item.id}`} item={item} />, element);
       },
       groupTemplate: (group, element) => {
         if (!group) { return; }
@@ -138,7 +120,7 @@ class VisTimeline extends React.Component {
         if (!item) { return; }
         alert(`dropped object with content: "${objectData.content}" to item: "${item.content}"`);
       },
-      onAdd: (t, v) => {
+      onAdd: (t) => {
         const computeEngine = new ComputeEventDates(
           calendario, finalDates, familiasInfo, t.group
         );
@@ -146,17 +128,57 @@ class VisTimeline extends React.Component {
           .computeEventDates(t.duration, moment(t.start));
         t.start = result.startDate;
         t.end = result.endDate;
-        console.log(result);
+        const startPoint = result.startDate;
+        let lastEndDate = result.endDate;
         const newItens = [...this.state.items, t];
-        console.log(t);
-        this.container.setItems(newItens);
-        this.setState({ items: newItens });
+        const recomputedItens = newItens
+          .sort((a, b) => {
+            return a.start > b.start;
+          }).map((x) => {
+            if (x.overType !== 'op') return x;
+            if (x.id === t.id) return x;
+            if (!computeEngine.shouldPushEvent(
+              startPoint, lastEndDate,
+              moment(x.start), moment(x.end)
+            )) return x;
+            const newDates = computeEngine
+              .computeEventDates(x.duration, lastEndDate);
+            x.start = newDates.startDate; /* eslint-disable-line */
+            x.end = newDates.endDate; /* eslint-disable-line */
+            /* altera a data final do eixo para usar como base no proximo evento do loop */
+            lastEndDate = newDates.endDate;
+            return x;
+          });
+        this.container.setItems(recomputedItens);
+        this.setState({ items: recomputedItens });
         // this.container.redraw();
       }
     };
     const container = document.getElementById('mytimeline');
     this.container = new Timeline(container, items, groups, options);
   }
+
+  prepareCalendarBk = (calendar) => {
+    let bk = [];
+    Object.values(calendar).forEach((x) => {
+      Object.values(x).forEach((y) => {
+        const startDateString = `${y.data_recurso} ${y.hora_inicio}`;
+        const startDate = moment(startDateString, 'DD-MM-YYYY hh:mm');
+        const endDateString = `${y.data_recurso} ${y.hora_termino}`;
+        const endDate = moment(endDateString, 'DD-MM-YYYY hh:mm');
+        const newBk = {
+          id: `${y.codigo_recurso}-${y.data_recurso}`,
+          key: `${y.codigo_recurso}-${y.data_recurso}`,
+          group: y.codigo_recurso,
+          start: startDate,
+          end: endDate,
+          type: 'background'
+        };
+        bk = [...bk, newBk];
+      });
+    });
+    this.setState({ items: bk });
+  };
 
   renderOpList = () => {
     return ops.map((op) => {
